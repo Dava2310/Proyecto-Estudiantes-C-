@@ -10,23 +10,23 @@ class Materia
 
     // Atributos privados
     private:
-        string nombre;
-        string codigo_materia;
-        int num_semestre;
-        vector<float> notas; 
+        string nombre; // 20 caracteres - 6 = 14
+        string codigo_materia;  
 
+        // Codigo de Materia  19 - 17 = 2 
+        // Num. del Semestre  19 - 17 = 2
+        
     // Atributos publicos
     public:
         // Constructor
-        Materia(const string &nombre, int num_semestre, const string &codigo_materia); 
+        Materia(const string &nombre, const string &codigo_materia); 
         // Otros metodos
-        void Agregar_Nota(float nota);
         // Getters
         string getNombre();
         string getCodigo_Materia();
-        int getNum_Semestre();
-        vector<float> getVector();
-
+        // Setters
+        void setNombre(const string &nm) {this->nombre = nm;}
+        
 };
 
 #endif

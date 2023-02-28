@@ -17,34 +17,19 @@ Estudiante::Estudiante(const string &nombre, const string &cedula, int edad, flo
     this -> estatura = estatura;  
 }
 
-void Estudiante::listarNotas()
+void Estudiante::incluirMateria(Materia *obj_materia, int num)
 {
-    cout << "\t\t LISTADO DE NOTAS COMPLETO DEL ESTUDIANTE: " << this->nombre << endl;
-    for (int i = 0; i < materias.size(); i++)
-    {	
-        Materia* it = materias.at(i);
-        cout << "Notas de la materia: " << it->getNombre() << " (" << it->getCodigo_Materia() << ")" << endl;
-        cout << "Semestre de la materia: " << it->getNum_Semestre() << endl;
-        cout << "Notas: ";
+    EstudianteMateria *nuevo_objeto = new EstudianteMateria(obj_materia, num);
 
-        // Vector temporal de las notas de la materia 
-        vector<float> notas = it->getVector();
-
-        // Recorrido de notas de la materia
-        for (int j = 0; j < notas.size(); j++)
-        {
-            float it2 = notas[j];
-            cout << it2 << " ";
-        }
-        cout << endl;
-
-    };
-}
-
-void Estudiante::incluirMateria(Materia *obj_materia)
-{
-    // Incluir la materia dentro del vector "vector<Materia*> materias;"
-    materias.push_back(obj_materia);
+    if (nuevo_objeto != NULL)
+    {
+        materias.push_back(nuevo_objeto);
+        cout << "Ingreso exitoso de materia." << endl;
+    }
+    else
+    {
+        cout << "Hubo un problema al asignar la materia" << endl;
+    }
 }
 
 // Getters
@@ -74,7 +59,29 @@ float Estudiante::getPeso()
     return this->peso;
 }
 
-vector<Materia*> Estudiante::getVector()
+vector<EstudianteMateria*> Estudiante::getVector()
 {
     return this->materias;
+}
+
+// Setters
+
+void Estudiante::setNombre(const string &nombre)
+{
+    this->nombre = nombre;
+}
+
+void Estudiante::setPeso(float peso)
+{
+    this->peso = peso;
+}
+
+void Estudiante::setEdad(int edad)
+{
+    this->edad = edad;
+}
+
+void Estudiante::setEstatura(float estatura)
+{
+    this->estatura = estatura;
 }

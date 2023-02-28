@@ -6,7 +6,7 @@ using namespace std;
 #include <string>
 #include <vector>
 #include "Materia.h"
-
+#include "EstudianteMateria.h"
 class Estudiante{
 
     // Atributos privados
@@ -16,7 +16,7 @@ class Estudiante{
         int edad; // 5 caracteres 5 - 4 = 1
         float estatura; // 9 caracteres 9 - 8 = 1
         float peso; // 6 caracteres 6 - 4 = 2
-        vector<Materia*> materias;
+        vector<EstudianteMateria*> materias;
 
         //Metodos privados
     
@@ -25,8 +25,7 @@ class Estudiante{
         // Constructor
         Estudiante(const string &nombre, const string &cedula, int edad, float peso, float estatura); //Constructor
         // Otros metodos
-        void listarNotas();
-        void incluirMateria(Materia *obj_materia);
+        void incluirMateria(Materia *obj_materia, int num);
         // Setters
         void setNombre(const string &nombre);
         // void setCedula(const string &cedula); NO DEBERIA ESTAR PERMITIDO DESPUES DE LA INICIALIZACION
@@ -39,6 +38,6 @@ class Estudiante{
         int getEdad();
         float getEstatura();
         float getPeso();
-        vector<Materia*> getVector();
+        vector<EstudianteMateria*> getVector();
 };
 #endif
