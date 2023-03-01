@@ -17,6 +17,8 @@
 // Librerias de clases
 #include "include/Materia.h"
 #include "include/Estudiante.h"
+#include "include/EstudianteMateria.h"
+#include "include/Nota.h"
 
 using namespace std;
 
@@ -29,8 +31,14 @@ void listarMaterias(Estudiante *);
 void menuEstudiantes(Estudiante *);
 bool verificarCedula(const string cedula);
 bool verificarMateria(Materia* obj_materia, Estudiante *obj_estudiante, int num);
+
+void registrarNotas(Estudiante *);
+void registrarNotas(Estudiante *, Materia *, int);
+
 Estudiante* encontrarEstudiante();
 Materia* encontrarMateria(const string codigo);
+
+EstudianteMateria *encontrarObjeto(Estudiante *, Materia *, int );
 
 void bordes(); // Para listar estudiante
 void bordes2(); // Para listar materias
@@ -61,6 +69,7 @@ int main()
         cout << "4- Salir" << endl;
         cout << "Ingrese una opcion valida del 1 al 3: ";
         cin >> opcion;
+		cout << endl;
 
         switch(opcion)
         {
@@ -135,6 +144,7 @@ void menuEstudiantes(Estudiante *obj_estudiante)
 				listarMaterias(obj_estudiante);
 				break;
 			case 4:
+				registrarNotas(obj_estudiante);
 				break;
 			case 5:
 				break;
@@ -162,10 +172,11 @@ void crearEstudiante()
 
     // Recoleccion de datos
 	system("cls");
-    cout << "\t\t INGRESE LOS DATOS DEL ESTUDIANTE A CONTINUACION: " << endl;
-    cout << "Nombre: "; cin >> nombre;
-    cout << "Cedula: "; cin >> cedula;
-    
+    cout << "\t\t INGRESE LOS DATOS DEL ESTUDIANTE A CONTINUACION: " << endl << endl;
+
+	cout << "Cedula (Formato: 11222333): "; 
+	cin >> cedula;
+	
 	// Hacer un checkeo de que nadie tenga esa cedula ingresada
 	if (verificarCedula(cedula))
 	{
@@ -173,9 +184,36 @@ void crearEstudiante()
 		cout << "Se ha encontrado a un estudiante registrado con la misma cedula ingresada, por tanto, no se puede proceder." << endl;
 		return;	
 	}	
+
+    cout << "Primer Nombre y Primer Apellido: "; 
+
+	cin.ignore();
+	getline(cin, nombre);
+	
 	cout << "Edad: "; cin >> edad;
-    cout << "Peso: "; cin >> peso;
-    cout << "Estatura: "; cin >> estatura;
+
+	if (edad > 120 || edad < 0)
+	{
+		cout << "Es imposible ingresar a este estudiante con esta edad." << endl;
+		return;
+	}
+
+    cout << "Peso(kg): "; cin >> peso;
+
+	if (peso >= 1000 || peso < 0)
+	{
+		cout << "Es imposible ingresar a este estudiante con esta cantidad de Kilos" << endl;
+		return;
+	}
+
+    cout << "Estatura(cm): "; cin >> estatura;
+
+	// No se puede tener mas de 3m de altura
+	if (estatura < 10 || estatura > 300)
+	{
+		cout << "Es imposible ingresar a este estudiante con esta cantidad de altura." << endl;
+		return;
+	}
 
     // Crear el objeto estudiante con uso de memoria de manera explicita
     Estudiante *obj_estudiante = new Estudiante(nombre, cedula, edad, peso, estatura);
@@ -259,8 +297,8 @@ void listarEstudiantes()
 	
 	// Centro con los titulos
 	cout << "|";
-	cout << "Nombre";
-	for (int j = 0; j < 14; j++)
+	cout << "Nombre y Apellido";
+	for (int j = 0; j < 23; j++)
 	{
 		cout << " ";
 	
@@ -279,7 +317,7 @@ void listarEstudiantes()
 	cout << " ";
 	cout << "|";
 	cout << "Peso";
-	cout << "  |" << endl;
+	cout << "    |" << endl;
 	
 	// Segundo borde 
 	bordes();
@@ -297,7 +335,7 @@ void listarEstudiantes()
 		// Impresion de los resultados
 		cout << "|";
 		cout << nombre;
-		for (int j = 0; j < 20 - nombre.length(); j++)
+		for (int j = 0; j < 40 - nombre.length(); j++)
 		{
 			cout << " ";
 			
@@ -313,19 +351,45 @@ void listarEstudiantes()
 		cout << "|";
 		
 		cout << edad;
-		for (int j = 0; j < 3; j++)
+
+		if (edad < 100)
 		{
-			cout << " ";
-			
+			cout << "   ";
+		}
+		else 
+		{
+			cout << "  ";
 		}
 		cout << "|";
 		
-		printf("%5.2f", estatura);
-		cout << "   ";
+		printf("%.2f", estatura);
+		
+		if (estatura >= 100)
+		{
+			cout << "   ";
+		}
+		else
+		{
+			cout << "    ";
+		}
+		
 		cout << "|";
 		
 		printf("%4.2f", peso);
-		cout << " |";
+		if (peso < 10)
+		{
+			cout << "    |";
+		}
+		else if (peso >= 10 && peso < 100)
+		{
+			cout << "   |";
+		}
+		else if (peso >= 100)
+		{
+			cout << "  |";
+		}
+
+
 		cout << endl;
 		
 	}
@@ -445,6 +509,7 @@ bool verificarMateria(Materia* obj_materia, Estudiante *obj_estudiante, int num)
 	
 	// Recorrer el vector de EstudianteMateria
 	vector<EstudianteMateria*> lista = obj_estudiante->getVector();
+
 	for (int i = 0; i < lista.size(); i++)
 	{
 		Materia* temp = lista.at(i)->getMateria();
@@ -559,7 +624,7 @@ void listarNotas(Estudiante *obj_estudiante)
 void bordes()
 {
 	cout << "+";
-	for (int j = 0; j < 20; j++)
+	for (int j = 0; j < 40; j++)
 	{
 		cout << "-";
 	}
@@ -579,7 +644,7 @@ void bordes()
 		cout << "-";
 	}
 	cout << "+";
-	for (int j = 0; j < 6; j++)
+	for (int j = 0; j < 8; j++)
 	{
 		cout << "-";
 	}
@@ -607,5 +672,167 @@ void bordes2()
 	cout << "+" << endl;
 }
 
+void registrarNotas(Estudiante *obj_estudiante)
+{
+	/* Hacer un menu interactivo con todas las materias*/
 
+	
+	
+	// Si el estudiante no tiene materias inscritas
+	if (obj_estudiante->getVector().size() < 1)
+	{
+		return;
+	}
 
+	char opcion = 'Y';
+	string codigo_materia = "";
+	int num_semestre;
+
+	do {
+
+		system("cls");
+		listarMaterias(obj_estudiante);
+
+		cout << "Ingrese el codigo de la materia a agregar notas: ";
+		cin >> codigo_materia;
+
+		cout << endl;
+
+		cout << "Ingrese el numero de semestre: ";
+		cin >> num_semestre;
+
+		cout << endl;
+
+		// Revisar si tiene una materia inscrita con este codigo de materia y numero de semestre
+		
+		// 1. Obteniendo la supuesta materia
+		Materia *obj_materia = encontrarMateria(codigo_materia);
+
+		bool verificacion = false;
+
+		if (obj_materia == NULL)
+		{	
+			cout << "Codigo invalido de materia." << endl;
+		}
+		else
+		{
+			// Si la materia existe, se verifica que la tenga el estudiante inscrita
+			verificacion = verificarMateria(obj_materia, obj_estudiante, num_semestre);
+			
+			if (verificacion)
+			{
+				registrarNotas(obj_estudiante, obj_materia, num_semestre);
+			}
+			else
+			{
+				cout << "El estudiante no tiene esta materia inscrita." << endl;
+			}
+
+		}
+		
+		cout << "Desea agregar notas a otra materia? (Y/N): ";
+		cin >> opcion;
+
+	}while(opcion == 'Y');
+}
+
+void registrarNotas(Estudiante *obj_estudiante, Materia *obj_materia, int num_semestre)
+{
+
+	while (true)
+	{
+
+		/*
+			1. Una nota tiene que estar en el rango de 0 a 10
+			2. Se muestran notdas las anteriores notas cargadas
+			3. Se pide el valor de la nota 
+			4. Se carga al vector de Notas
+		*/
+
+		// Encontrar el objeto EstudianteMateria
+		EstudianteMateria *relacion = encontrarObjeto(obj_estudiante, obj_materia, num_semestre);
+
+		if (relacion == NULL)
+		{	
+			cout << "ERROR AL AGREGAR NOTAS." << endl << endl;
+			return;
+		}
+		
+		// Mostrar notas: TODO
+		if (relacion->getVectorNotas().size() > 0)
+		{
+			vector<Nota *> vectorNotas = relacion->getVectorNotas();
+			
+			cout << "NOTAS CARGADAS ANTERIORES: " << endl << endl;
+			for (int i = 0; i < vectorNotas.size(); i++)
+			{	
+				Nota *temp = vectorNotas.at(i);
+
+				cout << "Descripcion: " << temp->getDescripcion() << " | Nota: " << temp->getPuntuaction() << endl; 
+			}
+			cout << endl;
+		}
+		else
+		{
+			cout << "No existen ninguna nota cargada previamente." << endl;
+		}
+
+		// Pedir el valor de la nota: TODO
+		float puntuacion; string descripcion;
+
+		cout << "Ingrese la descripcion o nombre del examen: ";
+		cin.ignore();
+
+		// Arreglar bug de ingreso: TODO
+		getline(cin, descripcion);
+
+		cin.ignore();
+
+		cout << "Ingrese la nota del examen: ";
+		cin >> puntuacion;
+		
+		if (puntuacion >= 0 && puntuacion <= 10)
+		{
+			// Cargar el valor de la nota: TODO
+			relacion->incluirNota(puntuacion, descripcion);
+		}
+		else
+		{
+			cout << "La nota debe estar en un rango de 0 a 10 pts." << endl;
+		}
+		
+
+		cout << "Desea agregar otra nota (Y/N): ";
+		char opcion;
+		cin >> opcion;
+
+		if (opcion != 'Y')
+		{
+			cout << "Terminando proceso de agregar notas a esta materia." << endl;
+			return;
+		}
+
+	}
+
+}
+
+EstudianteMateria *encontrarObjeto(Estudiante *obj_estudiante, Materia* obj_materia, int num_semestre)
+{
+	
+	vector<EstudianteMateria*> lista = obj_estudiante->getVector();
+
+	for (int i = 0; i < lista.size(); i++)
+	{
+
+		Materia *temp = lista.at(i)->getMateria(); 
+
+		if (obj_materia->getCodigo_Materia() == temp->getCodigo_Materia() 
+		&& num_semestre == lista.at(i)->getNum_Semestre())
+		{
+			return lista.at(i);
+		}
+
+	}
+
+	return NULL;
+}

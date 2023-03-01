@@ -1,6 +1,6 @@
 #include "EstudianteMateria.h"
 #include "Materia.h"
-
+#include "Nota.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -16,7 +16,16 @@ EstudianteMateria::EstudianteMateria(Materia *obj_materia, int num)
 
 }
 
-void EstudianteMateria::incluirNota(float nota)
+void EstudianteMateria::incluirNota(float nota, string descripcion)
 {
-    notas.push_back(nota);
+    // Crear el objeto nota:
+    Nota *nueva_nota = new Nota(nota, descripcion);
+
+    if (nueva_nota == NULL)
+    {
+        cout << "ERROR: No se pudo ingresar esta nota." << endl;
+        return;
+    }
+    
+    notas.push_back(nueva_nota);
 }

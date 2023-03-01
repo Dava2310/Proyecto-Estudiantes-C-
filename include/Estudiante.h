@@ -18,6 +18,8 @@ class Estudiante{
         float peso; // 6 caracteres 6 - 4 = 2
         vector<EstudianteMateria*> materias;
 
+        // Nombre y Apellido  40 - 19 = 21
+
         //Metodos privados
     
     public:

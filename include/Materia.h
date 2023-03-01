@@ -20,7 +20,6 @@ class Materia
     public:
         // Constructor
         Materia(const string &nombre, const string &codigo_materia); 
-        // Otros metodos
         // Getters
         string getNombre();
         string getCodigo_Materia();
