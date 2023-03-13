@@ -8,6 +8,7 @@
 
 using namespace std;
 
+// Constructor de la clase
 Estudiante::Estudiante(const string &nombre, const string &cedula, int edad, float peso, float estatura)
 {
     this -> nombre = nombre;
@@ -17,6 +18,8 @@ Estudiante::Estudiante(const string &nombre, const string &cedula, int edad, flo
     this -> estatura = estatura;  
 }
 
+// Este metodo incluye el objeto materia con el numero de semestre
+// y crear una relacion nueva de EstudianteMateria dentro del estudiante
 void Estudiante::incluirMateria(Materia *obj_materia, int num)
 {
     EstudianteMateria *nuevo_objeto = new EstudianteMateria(obj_materia, num);
@@ -24,7 +27,7 @@ void Estudiante::incluirMateria(Materia *obj_materia, int num)
     if (nuevo_objeto != NULL)
     {
         materias.push_back(nuevo_objeto);
-        cout << "Ingreso exitoso de materia." << endl;
+        cout << "\nIngreso exitoso de materia." << endl;
     }
     else
     {

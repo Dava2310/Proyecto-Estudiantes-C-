@@ -2,6 +2,7 @@
 #include <string>
 using namespace std;
 
+// Constructor de la clase
 Materia::Materia(const string &nombre, const string &codigo_materia)
 {
     this -> nombre = nombre;
