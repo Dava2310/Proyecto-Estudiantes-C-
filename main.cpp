@@ -78,7 +78,7 @@ int main()
         cout << "2- Acceder a las operaciones de estudiantes " << endl;
         cout << "3- Listar estudiantes" << endl;
         cout << "4- Salir" << endl;
-        cout << "Ingrese una opcion valida del 1 al 3: ";
+        cout << "Ingrese una opcion valida del 1 al 4: ";
         cin >> opcion;
 		cout << endl;
 
